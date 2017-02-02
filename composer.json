@@ -1,0 +1,31 @@
+{
+    "name" : "allnetwork-web",
+	"type" : "project",
+	"description" : "AllNetwork Website",
+	"keywords" : [
+		"MVC"
+	],
+	"homepage" : "http://www.allnetwork.org",
+	"license" : "GPLv3",
+	"authors" : [{
+			"name" : "BusDev Committee AllNetwork",
+			"email" : "busdev@allnetwork.org"
+		}
+	],
+	"support" : {
+		"issues" : "https://github.com/IrcAllnetwork/allnetwork-web/issues",
+		"email" : "support@allnetwork.org"
+	},
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "require": {
+        "transformatika/utility": "dev-master",
+        "transformatika/config": "dev-master",
+        "propel/propel": "~2.0@dev",
+        "phpunit/phpunit": "^5.4",
+        "transformatika/mvc": "^2.1"
+    }
+}

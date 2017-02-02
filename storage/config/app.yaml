@@ -1,0 +1,10 @@
+name:               'framework-skeleton'
+version:            '0.1.1'
+env:                'dev'
+basePath:           '/transformatika/framework-skeleton/public/'
+srcPath:            'src'
+templateExtension:  'php'
+cache:              false
+usePropel:          false
+useTwig:            true
+response:           'html'
