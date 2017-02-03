@@ -24,9 +24,11 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
 }
 
 /**
+ * Issue: https://github.com/IrcAllnetwork/allnetwork-web/issues/1
  * Fix CORS Headers
+ * Fix Issue #1 Undefined HTTP_REFERER
  */
-if ( $parts = parse_url($_SERVER['HTTP_REFERER']) ) {
+if (isset($_SERVER['HTTP_REFERER']) && $parts = parse_url($_SERVER['HTTP_REFERER']) ) {
     header("Access-Control-Allow-Origin: ".$parts["scheme"]."://".$parts["host"]);
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Max-Age: 1");
@@ -41,7 +43,7 @@ $path = '';
  * Fix chrome headers issue
  *
  */
-if (@$_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header('HTTP/1.1 200 OK');
     exit();
 }
