@@ -1,10 +1,10 @@
-name:               'framework-skeleton'
+name:               'allnetwork-web'
 version:            '0.1.1'
 env:                'dev'
-basePath:           '/transformatika/framework-skeleton/public/'
+basePath:           ''
 srcPath:            'src'
 templateExtension:  'php'
 cache:              false
-usePropel:          false
+usePropel:          true
 useTwig:            true
 response:           'html'
