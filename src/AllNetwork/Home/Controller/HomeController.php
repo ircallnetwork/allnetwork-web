@@ -18,13 +18,10 @@ use Transformatika\MVC\Controller;
 
 class HomeController extends Controller
 {
-    /**
-     * Main Homepage
-     * @return [type] [description]
-     */
     public function indexAction()
     {
         return [
+            'page' => 'home',
             'title' => 'Welcome to AllNetwork',
             'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                         sed do eiusmod tempor incididunt ut labore et dolore magna

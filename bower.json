@@ -1,0 +1,23 @@
+{
+  "name": "allnetwork-web",
+  "homepage": "https://github.com/IrcAllnetwork/allnetwork-web",
+  "authors": [
+    "Prastowo aGung Widodo <agung@transformatika.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic": "semantic-ui#^2.2.9",
+    "audiojs": "^1.0.1",
+    "slick-carousel": "^1.6.0"
+  }
+}

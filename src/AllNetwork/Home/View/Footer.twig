@@ -1,0 +1,87 @@
+    
+    
+        <script type="text/javascript" src="bower_components/audiojs/audiojs/audio.min.js"></script>
+        <script type="text/javascript">
+            audiojs.events.ready(function() {
+                var as = audiojs.createAll({
+                    autoplay: true
+                });
+            });
+             function toggleChat(e){
+                e.preventDefault();
+                $('#chat-content').slideToggle();
+                $('#toggle-chat-icon').toggleClass("ui chevron up icon ui chevron down icon");
+            }
+        </script>
+        <div class="chat-area" style="position:fixed;width: 350px;z-index:1000;right:15px;bottom:0;border-top-left-radius:4px;border-top-right-radius:4px;">
+            <div class="chat-header" style="background: #f2711c;color:#F5F5F5;border-top-left-radius:4px;border-top-right-radius:4px;font-weight:bold;padding:8px;">
+                IRC Chat
+                <a href="" onClick="toggleChat(event)" style="float:right;color: #F5F5F5;">
+                    <i id="toggle-chat-icon" class="ui chevron up icon"></i>
+                </a>
+            </div>
+            <div id="chat-content" class="chat-content" style="height: 450px;width:100%;display:none;">
+                <iframe src="http://webhost.ngapak.org:9000" width="350" height="450" frameborder="0"></iframe>
+            </div>
+        </div>
+        <div class="ui inverted vertical footer segment">
+            <div class="ui container">
+                <div class="ui stackable inverted divided equal height stackable grid">
+                    <div class="four wide column">
+                    <h4 class="ui inverted header">Informasi</h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">Link Server</a>
+                        <a href="#" class="item">Tim AllNetwork</a>
+                        <a href="#" class="item">Tim Radio</a>
+                        <a href="#" class="item">Kontak kami</a>
+                    </div>
+                    </div>
+                    <div class="six wide column">
+                        <h4 class="ui inverted header">IRC Server</h4>
+                        <div class="ui inverted link list">
+                            <a href="javascript:void(0)" class="item">Host: irc.allnetwork.org</a>
+                            <a href="javascript:void(0)" class="item">Port: 6667 / 6697 (SSL)</a>
+                            <a href="#" onClick="toggleChat(event);" class="item">Instant access</a>
+                        </div>
+                        <h4 class="ui inverted header">Radio AllNetwork</h4>
+                        <p><i class="ui music icon"></i> <a style="color: #f2711c" target="_blank" href="http://radio.allnetwork.org/listen.pls">http://radio.allnetwork.org/listen.pls</a></p>
+                        <audio src="http://radio.allnetwork.org/relay?type=http&amp;nocache=125" preload="auto" />
+                    </div>
+                    <div class="six wide column">
+                        <h4 class="ui inverted header">Kontak</h4>
+                        <div class="ui inverted link list">
+                            <a href="javascript:void(0)" class="item">AllNetwork (Indonesian IRC Network)</a>
+                            <a href="javascript:void(0)" class="item">Jl. Air Tawar Blok A No 69 RT.004 RW .04</a>
+                            <a href="javascript:void(0)" class="item">Bendungan Hilir – Jakarta Pusat.</a>
+                        </div>
+                        <p>
+                            <i class="ui mail icon"></i> <a style="color: #f2711c" href="mailto:kontak@allnetwork.org">kontak@allnetwork.org</a>
+                        </p>
+                        <p>
+                            <i class="ui facebook icon"></i> <a style="color: #f2711c" href="https://www.facebook.com/groups/irc.allnetwork.org">AllNetwork</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="bower_components/semantic/dist/semantic.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // fix menu when passed
+            $('.masthead').visibility({
+                once: false,
+                onBottomPassed: function() {
+                    $('.fixed.menu').transition('fade in');
+                },
+                onBottomPassedReverse: function() {
+                    $('.fixed.menu').transition('fade out');
+                }
+            });
+
+            // create sidebar and attach to menu open
+            $('.ui.sidebar').sidebar('attach events', '.toc.item');
+        });
+  </script>
+</body>
+</html>

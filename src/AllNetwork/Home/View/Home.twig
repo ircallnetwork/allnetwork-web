@@ -1,10 +1,100 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>{{title}}</title>
-    </head>
-    <body>
-        {{content}}
-    </body>
-</html>
+{% include 'AllNetwork/Home/View/Header.twig' %}
+<link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css">
+<link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css">
+<script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#rj-slideshow').slick({
+            autoplay: true
+        });
+    });
+</script>
+<div class="pusher">
+    <div class="ui inverted vertical masthead center aligned segment" id="wallpaper">
+        <div class="ui container">
+            <div class="ui large secondary inverted pointing menu" style="border:0;">
+                <a class="toc item">
+                    <i class="sidebar icon"></i>
+                </a>
+                <a class="{% if page == 'home' %} active {% endif %} item">Beranda</a>
+                <a class="{% if page == 'server' %} active {% endif %} item">Server</a>
+                <a class="{% if page == 'radio' %} active {% endif %} item">Radio</a>
+                <a class="{% if page == 'events' %} active {% endif %} item">Kegiatan</a>
+                <a class="{% if page == 'community' %} active {% endif %} item">Komunitas</a>
+                <a class="{% if page == 'about' %} active {% endif %} item">Tentang Kami</a>
+                <div class="right item">
+                    <a class="ui inverted button">Masuk</a>
+                    <a class="ui inverted button">Daftar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui text container">
+            <h1 class="ui inverted header">
+                AllNetwork IRC Network
+            </h1>
+            <h2>Bukan sekedar IRC Network, kami adalah komunitas yang solid sejak 1999</h2>
+            <div class="ui huge orange button" onClick="toggleChat(event);">Gabung sekarang <i class="right arrow icon"></i></div>
+        </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+            {{content}}
+        </div>
+    </div>
+    <div class="ui orange inverted vertical stripe quote segment">
+        <div class="ui equal width stackable internally grid">
+            <div class="center aligned row">
+                <div class="column" style="border-right: 1px solid rgba(255,255,255,.65)">
+                    <h3 style="font-size:4em;">
+                        <i class="ui dollar icon"></i>00.00
+                    </h3>
+                    <p>
+                        Semua layanan AllNetwork GRATIS
+                    </p>
+                    <p>
+                        Tanpa beban biaya apapun.
+                    </p>
+                </div>
+                <div class="column">
+                    <h3 style="font-size:4em;">
+                        <i class="ui windows icon"></i>
+                        <i class="ui apple icon"></i>
+                        <i class="ui linux icon"></i>
+                        <i class="ui android icon"></i>
+                    </h3>
+                    <p>
+                        IRC Client dapat berjalan disemua platform
+                    </p>
+                    <p>
+                        Silahkan cari aplikasi IRC Client Favorit anda
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="eight wide column">
+                    <img class="ui image" src="img/radio-logo-wide.jpg"/>
+                    <p>
+                        <strong>Radio AllNetwork</strong> merupakan salah satu layanan AllNetwork yang memberikan hiburan dengan program-program radio yang tentunya asyik untuk didengarkan.
+                    </p>
+                    <p>Keep streaming and stay have fun…!</p>
+                </div>
+                <div class="eight wide column" style="padding-top:50px;">
+                    <div id="rj-slideshow">
+                        {% for i in 1..12 %}
+                            <div>
+                                <img src="img/rj/{{ i }}.jpg" class="ui large rounded right floated image"/>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'AllNetwork/Home/View/Footer.twig' %}
