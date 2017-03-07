@@ -1,0 +1,10 @@
+propel:
+    database:
+        connections:
+            default:
+                adapter: sqlite
+                dsn: sqlite:storage/db/web.sqlite
+                user: 
+                password: 
+                settings:
+                    charset: utf8

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database package="allnetwork" defaultIdMethod="native" defaultPhpNamingMethod="underscore" name="default" namespace="Propel\Table\AllNetwork">
+    <table name="user" idMethod="native" phpName="User">
+        <column name="user_id" phpName="Id" type="INTEGER" autoincrement="true" primaryKey="true" required="true"/>
+        <column name="user_name" phpName="Name" type="VARCHAR" size="32" required="true"/>
+        <column name="user_email" phpName="Email" type="VARCHAR" size="255" required="true"/>
+        <column name="user_firstname" phpName="FirstName" type="VARCHAR" size="48"/>
+        <column name="user_lastname" phpName="LastName" type="VARCHAR" size="48"/>
+        <column name="user_photo" phpName="Photo" type="CLOB"/>
+        <column name="user_password" phpName="Password" type="VARCHAR" size="255"/>
+        <column name="user_key" phpName="Key" type="VARCHAR" size="255"/>
+        <column name="user_status" phpName="Status" type="CHAR" size="1" defaultValue="p"/>
+        <column name="user_su" phpName="SuperUser" type="CHAR" size="1" defaultValue="n"/>
+        <column name="user_expired" phpName="ExpiredDate" type="TIMESTAMP"/>
+        <column name="user_ipaddress" phpName="IPAddress" type="VARCHAR" size="128"/>
+        <column name="user_registerdate" phpName="RegisterDate" type="TIMESTAMP"/>
+        <column name="user_level" phpName="Level" type="CHAR" default="ACC" size="3"/>
+    </table>
+    <table idMethod="native" name="post" phpName="Post">
+        <column name="post_id" phpName="Id" type="INTEGER" autoincrement="true" primaryKey="true" required="true"/>
+        <column name="post_title" phpName="Title" type="VARCHAR" size="160" required="true"/>
+        <column name="post_slug" phpName="Slug" type="VARCHAR" size="200" required="true"/>
+        <column name="post_content" phpName="Content" type="CLOB"/>
+        <column name="post_image" phpName="Image" type="CLOB"/>
+        <column name="post_createdby" phpName="CreatedBy" type="INTEGER" required="true"/>
+        <column name="post_createddate" phpName="CreatedDate" type="TIMESTAMP"/>
+        <column name="post_publishdate" phpName="PublishDate" type="TIMESTAMP"/>
+        <column name="post_status" phpName="Status" type="CHAR" size="1" defaultValue="p"/>
+    </table>
+    <table idMethod="native" name="posttag" phpName="PostTag">
+        <column name="posttag_post" phpName="PostId" type="INTEGER" primaryKey="true" required="true"/>
+        <column name="posttag_tag" phpName="TagId" type="VARCHAR" size="32" primaryKey="true" required="true"/>
+        <foreign-key name="fk_posttag_post" foreignTable="post">
+            <reference local="posttag_post" foreign="post_id"/>
+        </foreign-key>
+        <foreign-key name="fk_posttag_tag" foreignTable="tag">
+            <reference local="posttag_tag" foreign="tag_name"/>
+        </foreign-key>
+    </table>
+    <table idMethod="native" name="tag" phpName="Tag">
+        <column name="tag_name" phpName="Name" type="VARCHAR" size="32" required="true" primaryKey="true"/>
+        <column name="tag_status" phpName="Status" type="CHAR" size="1" defaultValue="y"/>
+        <column name="tag_totalpost" type="INTEGER" required="true" defaultValue="0"/>
+        <behavior name="aggregate_column">
+            <parameter name="name" value="nb_posts" />
+            <parameter name="foreign_table" value="posttag" />
+            <parameter name="expression" value="COUNT(posttag_post)" />
+        </behavior>
+    </table>
+</database>
