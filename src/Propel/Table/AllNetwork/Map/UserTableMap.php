@@ -212,6 +212,13 @@ class UserTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Post', '\\Propel\\Table\\AllNetwork\\Post', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':post_createdby',
+    1 => ':user_id',
+  ),
+), null, null, 'Posts', false);
     } // buildRelations()
 
     /**

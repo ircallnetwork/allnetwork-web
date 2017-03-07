@@ -48,6 +48,16 @@ use Propel\Table\AllNetwork\Map\PostTableMap;
  * @method     ChildPostQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPostQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildPostQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
+ * @method     ChildPostQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
+ * @method     ChildPostQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ *
+ * @method     ChildPostQuery joinWithUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the User relation
+ *
+ * @method     ChildPostQuery leftJoinWithUser() Adds a LEFT JOIN clause and with to the query using the User relation
+ * @method     ChildPostQuery rightJoinWithUser() Adds a RIGHT JOIN clause and with to the query using the User relation
+ * @method     ChildPostQuery innerJoinWithUser() Adds a INNER JOIN clause and with to the query using the User relation
+ *
  * @method     ChildPostQuery leftJoinPostTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the PostTag relation
  * @method     ChildPostQuery rightJoinPostTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PostTag relation
  * @method     ChildPostQuery innerJoinPostTag($relationAlias = null) Adds a INNER JOIN clause to the query using the PostTag relation
@@ -58,7 +68,7 @@ use Propel\Table\AllNetwork\Map\PostTableMap;
  * @method     ChildPostQuery rightJoinWithPostTag() Adds a RIGHT JOIN clause and with to the query using the PostTag relation
  * @method     ChildPostQuery innerJoinWithPostTag() Adds a INNER JOIN clause and with to the query using the PostTag relation
  *
- * @method     \Propel\Table\AllNetwork\PostTagQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \Propel\Table\AllNetwork\UserQuery|\Propel\Table\AllNetwork\PostTagQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildPost findOne(ConnectionInterface $con = null) Return the first ChildPost matching the query
  * @method     ChildPost findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPost matching the query, or a new ChildPost object populated from the query conditions when no match is found
@@ -435,6 +445,8 @@ abstract class PostQuery extends ModelCriteria
      * $query->filterByCreatedBy(array('min' => 12)); // WHERE post_createdby > 12
      * </code>
      *
+     * @see       filterByUser()
+     *
      * @param     mixed $createdBy The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -575,6 +587,83 @@ abstract class PostQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PostTableMap::COL_POST_STATUS, $status, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Table\AllNetwork\User object
+     *
+     * @param \Propel\Table\AllNetwork\User|ObjectCollection $user The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildPostQuery The current query, for fluid interface
+     */
+    public function filterByUser($user, $comparison = null)
+    {
+        if ($user instanceof \Propel\Table\AllNetwork\User) {
+            return $this
+                ->addUsingAlias(PostTableMap::COL_POST_CREATEDBY, $user->getId(), $comparison);
+        } elseif ($user instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PostTableMap::COL_POST_CREATEDBY, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByUser() only accepts arguments of type \Propel\Table\AllNetwork\User or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the User relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildPostQuery The current query, for fluid interface
+     */
+    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('User');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'User');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the User relation User object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Table\AllNetwork\UserQuery A secondary query class using the current class as primary query
+     */
+    public function useUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'User', '\Propel\Table\AllNetwork\UserQuery');
     }
 
     /**

@@ -2193,16 +2193,16 @@
         },
         {
             "name": "transformatika/mvc",
-            "version": "v2.1.10",
+            "version": "v2.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/transformatika/mvc.git",
-                "reference": "62d985a8362cd948c414aba2a860873f158b5233"
+                "reference": "d7cec571d512b17941dbb5cfc8ac4beeddd2a877"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/transformatika/mvc/zipball/62d985a8362cd948c414aba2a860873f158b5233",
-                "reference": "62d985a8362cd948c414aba2a860873f158b5233",
+                "url": "https://api.github.com/repos/transformatika/mvc/zipball/d7cec571d512b17941dbb5cfc8ac4beeddd2a877",
+                "reference": "d7cec571d512b17941dbb5cfc8ac4beeddd2a877",
                 "shasum": ""
             },
             "require": {
@@ -2232,7 +2232,7 @@
                 "framework",
                 "mvc"
             ],
-            "time": "2017-01-16T07:26:50+00:00"
+            "time": "2017-02-25T12:36:08+00:00"
         },
         {
             "name": "transformatika/utility",

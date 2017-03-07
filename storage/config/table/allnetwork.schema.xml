@@ -26,6 +26,9 @@
         <column name="post_createddate" phpName="CreatedDate" type="TIMESTAMP"/>
         <column name="post_publishdate" phpName="PublishDate" type="TIMESTAMP"/>
         <column name="post_status" phpName="Status" type="CHAR" size="1" defaultValue="p"/>
+        <foreign-key name="fk_post_user" foreignTable="user">
+            <reference local="post_createdby" foreign="user_id"/>
+        </foreign-key>
     </table>
     <table idMethod="native" name="posttag" phpName="PostTag">
         <column name="posttag_post" phpName="PostId" type="INTEGER" primaryKey="true" required="true"/>

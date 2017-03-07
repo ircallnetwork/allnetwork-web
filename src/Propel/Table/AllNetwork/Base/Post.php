@@ -22,6 +22,8 @@ use Propel\Table\AllNetwork\Post as ChildPost;
 use Propel\Table\AllNetwork\PostQuery as ChildPostQuery;
 use Propel\Table\AllNetwork\PostTag as ChildPostTag;
 use Propel\Table\AllNetwork\PostTagQuery as ChildPostTagQuery;
+use Propel\Table\AllNetwork\User as ChildUser;
+use Propel\Table\AllNetwork\UserQuery as ChildUserQuery;
 use Propel\Table\AllNetwork\Map\PostTableMap;
 use Propel\Table\AllNetwork\Map\PostTagTableMap;
 
@@ -129,6 +131,11 @@ abstract class Post implements ActiveRecordInterface
      * @var        string
      */
     protected $post_status;
+
+    /**
+     * @var        ChildUser
+     */
+    protected $aUser;
 
     /**
      * @var        ObjectCollection|ChildPostTag[] Collection to store aggregation of ChildPostTag objects.
@@ -615,6 +622,10 @@ abstract class Post implements ActiveRecordInterface
             $this->modifiedColumns[PostTableMap::COL_POST_CREATEDBY] = true;
         }
 
+        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+            $this->aUser = null;
+        }
+
         return $this;
     } // setCreatedBy()
 
@@ -774,6 +785,9 @@ abstract class Post implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aUser !== null && $this->post_createdby !== $this->aUser->getId()) {
+            $this->aUser = null;
+        }
     } // ensureConsistency
 
     /**
@@ -813,6 +827,7 @@ abstract class Post implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aUser = null;
             $this->collPostTags = null;
 
         } // if (deep)
@@ -917,6 +932,18 @@ abstract class Post implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aUser !== null) {
+                if ($this->aUser->isModified() || $this->aUser->isNew()) {
+                    $affectedRows += $this->aUser->save($con);
+                }
+                $this->setUser($this->aUser);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -1180,6 +1207,21 @@ abstract class Post implements ActiveRecordInterface
         }
         
         if ($includeForeignObjects) {
+            if (null !== $this->aUser) {
+                
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'user';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'user';
+                        break;
+                    default:
+                        $key = 'User';
+                }
+        
+                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collPostTags) {
                 
                 switch ($keyType) {
@@ -1513,6 +1555,57 @@ abstract class Post implements ActiveRecordInterface
         return $copyObj;
     }
 
+    /**
+     * Declares an association between this object and a ChildUser object.
+     *
+     * @param  ChildUser $v
+     * @return $this|\Propel\Table\AllNetwork\Post The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUser(ChildUser $v = null)
+    {
+        if ($v === null) {
+            $this->setCreatedBy(NULL);
+        } else {
+            $this->setCreatedBy($v->getId());
+        }
+
+        $this->aUser = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPost($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildUser object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildUser The associated ChildUser object.
+     * @throws PropelException
+     */
+    public function getUser(ConnectionInterface $con = null)
+    {
+        if ($this->aUser === null && ($this->post_createdby !== null)) {
+            $this->aUser = ChildUserQuery::create()->findPk($this->post_createdby, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUser->addPosts($this);
+             */
+        }
+
+        return $this->aUser;
+    }
+
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -1789,6 +1882,9 @@ abstract class Post implements ActiveRecordInterface
      */
     public function clear()
     {
+        if (null !== $this->aUser) {
+            $this->aUser->removePost($this);
+        }
         $this->post_id = null;
         $this->post_title = null;
         $this->post_slug = null;
@@ -1825,6 +1921,7 @@ abstract class Post implements ActiveRecordInterface
         } // if ($deep)
 
         $this->collPostTags = null;
+        $this->aUser = null;
     }
 
     /**

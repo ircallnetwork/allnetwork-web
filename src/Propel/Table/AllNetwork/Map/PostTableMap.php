@@ -171,7 +171,7 @@ class PostTableMap extends TableMap
         $this->addColumn('post_slug', 'Slug', 'VARCHAR', true, 200, null);
         $this->addColumn('post_content', 'Content', 'CLOB', false, null, null);
         $this->addColumn('post_image', 'Image', 'CLOB', false, null, null);
-        $this->addColumn('post_createdby', 'CreatedBy', 'INTEGER', true, null, null);
+        $this->addForeignKey('post_createdby', 'CreatedBy', 'INTEGER', 'user', 'user_id', true, null, null);
         $this->addColumn('post_createddate', 'CreatedDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('post_publishdate', 'PublishDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('post_status', 'Status', 'CHAR', false, 1, 'p');
@@ -182,6 +182,13 @@ class PostTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('User', '\\Propel\\Table\\AllNetwork\\User', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':post_createdby',
+    1 => ':user_id',
+  ),
+), null, null, null, false);
         $this->addRelation('PostTag', '\\Propel\\Table\\AllNetwork\\PostTag', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
