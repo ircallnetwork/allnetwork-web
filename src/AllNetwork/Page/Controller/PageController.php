@@ -7,7 +7,7 @@ use AllNetwork\Page\Model\PageModel;
 class PageController extends Controller
 {
     protected $model;
-    
+
     public function __construct()
     {
         parent::__construct();
@@ -16,16 +16,22 @@ class PageController extends Controller
 
     public function indexAction()
     {
-        $page = $this->model->getPage();
+        $params = $this->request->getQueryParams();
+        $page = !isset($params['page']) ? 1 : (int) $params['page'];
+        $this->model->setPage($page);
+        $page = $this->model->getPage($params);
     }
 
-    public function filterByTagAction($tag = '')
+    public function filterByTagAction()
     {
-        $page = $this->model->getPageByTag($tag);
+        $tag = $this->request->getAttribute('tag');
+        $page = $this->model->getDataByTag($tag);
         return [
-            'page' => $tag,
-            'title' => $tag,
-            'data' => $page
+            'page' => 'Page',
+            'title' => 'AllNetwork - HashTag: #' . $tag,
+            'records' => $page,
+            'tag' => $tag,
+            'template' => 'Page.twig'
         ];
     }
 }

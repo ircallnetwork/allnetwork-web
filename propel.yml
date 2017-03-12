@@ -2,9 +2,9 @@ propel:
     database:
         connections:
             default:
-                adapter: sqlite
-                dsn: sqlite:storage/db/web.sqlite
-                user: 
-                password: 
+                adapter: mysql
+                dsn: mysql:host=localhost;port=3306;dbname=allnetwork
+                user: root
+                password: 123456
                 settings:
                     charset: utf8

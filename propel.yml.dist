@@ -9,17 +9,17 @@
 propel:
     paths:
         # The directory where Propel expects to find your `schema.xml` file.
-        schemaDir: D:\www\allnetwork-web\storage\config\table
+        schemaDir: storage/config/table/
 
         # The directory where Propel should output generated object model classes.
-        phpDir: D:\www\allnetwork-web\src
+        phpDir: src/
 
 #   database:
 #       connections:
 #           default:
 #               adapter: sqlite
-#               dsn: sqlite:storage/db/web.sqlite
-#               user: 
+#               dsn: mysql:host=localhost;port=3306;dbname=allnetwork
+#               user:
 #               password:
 #               settings:
 #                   charset: utf8

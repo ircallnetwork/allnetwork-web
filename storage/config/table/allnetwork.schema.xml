@@ -18,14 +18,15 @@
     </table>
     <table idMethod="native" name="post" phpName="Post">
         <column name="post_id" phpName="Id" type="INTEGER" autoincrement="true" primaryKey="true" required="true"/>
-        <column name="post_title" phpName="Title" type="VARCHAR" size="160" required="true"/>
-        <column name="post_slug" phpName="Slug" type="VARCHAR" size="200" required="true"/>
+        <column name="post_title" phpName="Title" type="VARCHAR" size="160" required="true" primaryString="true"/>
+        <column name="post_slug" phpName="Slug" type="VARCHAR" size="200" required="true" primaryString="true"/>
         <column name="post_content" phpName="Content" type="CLOB"/>
         <column name="post_image" phpName="Image" type="CLOB"/>
         <column name="post_createdby" phpName="CreatedBy" type="INTEGER" required="true"/>
         <column name="post_createddate" phpName="CreatedDate" type="TIMESTAMP"/>
         <column name="post_publishdate" phpName="PublishDate" type="TIMESTAMP"/>
         <column name="post_status" phpName="Status" type="CHAR" size="1" defaultValue="p"/>
+        <behavior name="query_cache" />
         <foreign-key name="fk_post_user" foreignTable="user">
             <reference local="post_createdby" foreign="user_id"/>
         </foreign-key>

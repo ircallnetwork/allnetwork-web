@@ -1,0 +1,66 @@
+{% include 'AllNetwork/Home/View/Header.twig' %}
+<style>
+    .headermenu .toc.item {
+        display: none !important;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .headermenu .toc.item,
+        .headermenu .right.menu .item {
+            display: block !important;
+        }
+        .headermenu .item:not(.toc){
+            display: none !important;
+        }
+    }
+    .pusher {
+        padding-top: 52px;
+    }
+    .ui.inverted.vertical.footer.segment{
+        padding-top: 60px;
+    }
+</style>
+<div class="pusher">
+    <div class="ui orange inverted vertical stripe quote segment">
+        <div class="ui container">
+            <div class="ui basic segment">
+                <h1 class="ui inverted header">
+                    #{{tag}}
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="ui vertical stripe segment">
+        <div class="ui stackable grid container">
+            <div class="twelve wide column">
+                <div class="ui items">
+                    {% for page in records %}
+                    <div class="item">
+                        <div class="image">
+                          <img src="{{page.Image | length == 0 ? "/img/image.png" : page.Image}}">
+                        </div>
+                        <div class="content">
+                            <a class="header">{{page.Title}}</a>
+                            <div class="meta">
+                                <span>
+                                    <strong><i class="ui calendar icon"></i> Date:</strong> {{page.PublishDate}} - <strong><i class="ui tag icon"></i> Tag:</strong> #{{tag}}
+                                </span>
+                            </div>
+                            <div class="description">
+                                {{page.Content|length > 400 ? page.Content|slice(0, 400) ~ '...' : page.Content}}
+                            </div>
+                            <div class="extra">
+                                <a href="" class="ui mini button">Selengkapnya</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="for wide column">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'AllNetwork/Home/View/Footer.twig' %}

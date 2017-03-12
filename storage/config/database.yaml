@@ -1,7 +1,7 @@
-driver:     'sqlite'
-host:       ''
-user:       ''
-password:   ''
-name:       '/home/ag/www/allnetwork-web/storage/db/web.sqlite'
-port:       5432
+driver:     'mysql'
+host:       'localhost'
+user:       'root'
+password:   '123456'
+name:       'allnetwork'
+port:       3306
 charset:    'utf8'

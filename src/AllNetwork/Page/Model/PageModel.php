@@ -2,6 +2,7 @@
 namespace AllNetwork\Page\Model;
 
 use Propel\Table\AllNetwork\PostQuery;
+use Propel\Table\AllNetwork\PostTagQuery;
 use Propel\Table\AllNetwork\TagQuery;
 use Propel\Runtime\ActiveQuery\Critera;
 use Transformatika\MVC\Model;
@@ -12,18 +13,20 @@ class PageModel extends Model
 
     protected $page = 1;
 
-    public function getData()
+    public function getData($options = [])
     {
-        $post = PostQuery::create()->filterByStatus('d', Critera::NOT_EQUAL)
-                                    ->filterByPublishDate(
-                                        [
-                                            'max' => date('Y-m-d H:i:s')
-                                        ]
-                                    )
-                                    ->orderByPublishDate('DESC')
-                                    ->find();
-        
+        $post = PostQuery::create()->filterByStatus('d', Critera::NOT_EQUAL);
+        if (isset($options['keyword']) && !empty($options['keyword'])) {
+            $post = $post->setQueryKey('filter by title')
+                         ->fitlerByTitle($options['keyword']);
+        }
+
+        $post = $post->filterByPublishDate([
+                            'max' => date('Y-m-d H:i:s')
+                        ])->orderByPublishDate('DESC')->paginate($this->page, $this->limit);
+
         $result = [];
+
         foreach ($post as $k => $v) {
             $tags = $v->getTags();
             $result[] = [
@@ -42,12 +45,12 @@ class PageModel extends Model
         return $result;
     }
 
-    public function getDataById($id)
+    public function getDataById($id = null)
     {
         $post = PostQuery::create()->filterByStatus('d', Critera::NOT_EQUAL)
                                     ->filterById($id)
                                     ->find();
-        
+
         $result = [];
         foreach ($post as $k => $v) {
             $tags = $v->getTags();
@@ -70,21 +73,22 @@ class PageModel extends Model
     public function getDataBySlug($slug)
     {
          $post = PostQuery::create()->filterByStatus('d', Critera::NOT_EQUAL)
-                                    ->filterBySlug($sslug)
-                                    ->find();
-        
+                                    ->setQueryKey('filter by slug')
+                                    ->filterBySlug($slug)
+                                    ->findOne();
+
         $result = [];
-        foreach ($post as $k => $v) {
-            $tags = $v->getTags();
-            $result[] = [
-                'id' => $v->getId(),
-                'title' => $v->getTitle(),
-                'slug' => $v->getSlug(),
-                'content' => $v->getContent(),
-                'publishDate' => $v->getPublishDate(),
-                'createdBy' => $v->getUser()->getName(),
-                'createdById' => $v->getCreatedBy(),
-                'createdDate' => $v->getCreatedDate(),
+        if (!empty($post)) {
+            $tags = $post->getTags();
+            $result = [
+                'id' => $post->getId(),
+                'title' => $post->getTitle(),
+                'slug' => $post->getSlug(),
+                'content' => $post->getContent(),
+                'publishDate' => $post->getPublishDate(),
+                'createdBy' => $post->getUser()->getName(),
+                'createdById' => $post->getCreatedBy(),
+                'createdDate' => $post->getCreatedDate(),
                 'tags' => empty($tags) ? [] : $tags->toArray()
             ];
         }
@@ -98,26 +102,19 @@ class PageModel extends Model
             return $this->getData();
         }
 
-        $tag = TagQuery::create()->filterByName($tag)->findOne();
-        if (empty($tag)) {
+        $post = PostQuery::create()->usePostTagQuery('a')
+                                    ->filterByTagId($tag)
+                                    ->endUse()
+                                    ->withColumn('a.TagId', 'TagName')
+                                    ->find();
+        if (empty($post)) {
             return [];
         }
 
-        $post = $tag->getPosts();
-        $result = [];
+        $result = $post->toArray();
         foreach ($post as $k => $v) {
-            $tags = $v->getTags();
-            $result[] = [
-                'id' => $v->getId(),
-                'title' => $v->getTitle(),
-                'slug' => $v->getSlug(),
-                'content' => $v->getContent(),
-                'publishDate' => $v->getPublishDate(),
-                'createdBy' => $v->getUser()->getName(),
-                'createdById' => $v->getCreatedBy(),
-                'createdDate' => $v->getCreatedDate(),
-                'tags' => empty($tags) ? [] : $tags->toArray()
-            ];
+            $result[$k]['Content'] = strip_tags($v->getContent());
+            $result[$k]['PublishDate'] = $v->getPublishDate()->format('l, jS F Y h:i A');
         }
 
         return $result;

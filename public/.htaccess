@@ -5,6 +5,6 @@ Header set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
 
 Options -Indexes +FollowSymLinks
 RewriteEngine on
-RewriteBase /transformatika/framework-skeleton/public/
+RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]

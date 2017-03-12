@@ -12,13 +12,14 @@
  * @version   GIT: $Id$
  * @link      https://github.com/IrcAllnetwork/allnetwork-web
  */
- use Zend\Session\Config\StandardConfig;
- use Zend\Session\SessionManager;
- use Zend\Session\Container;
- use Zend\Session\Validator\HttpUserAgent;
- use Zend\Session\Validator\RemoteAddr;
- use Transformatika\Config\Config;
- use Transformatika\MVC\RouteDispatcher;
+
+use Zend\Session\Config\StandardConfig;
+use Zend\Session\SessionManager;
+use Zend\Session\Container;
+use Zend\Session\Validator\HttpUserAgent;
+use Zend\Session\Validator\RemoteAddr;
+use Transformatika\Config\Config;
+use Transformatika\MVC\RouteDispatcher;
 
 Config::init([
     'configExt' => 'yaml',

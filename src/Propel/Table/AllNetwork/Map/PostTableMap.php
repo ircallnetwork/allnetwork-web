@@ -168,7 +168,9 @@ class PostTableMap extends TableMap
         // columns
         $this->addPrimaryKey('post_id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('post_title', 'Title', 'VARCHAR', true, 160, null);
+        $this->getColumn('post_title')->setPrimaryString(true);
         $this->addColumn('post_slug', 'Slug', 'VARCHAR', true, 200, null);
+        $this->getColumn('post_slug')->setPrimaryString(true);
         $this->addColumn('post_content', 'Content', 'CLOB', false, null, null);
         $this->addColumn('post_image', 'Image', 'CLOB', false, null, null);
         $this->addForeignKey('post_createdby', 'CreatedBy', 'INTEGER', 'user', 'user_id', true, null, null);
@@ -197,6 +199,19 @@ class PostTableMap extends TableMap
   ),
 ), null, null, 'PostTags', false);
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'query_cache' => array('backend' => 'apc', 'lifetime' => '3600', ),
+        );
+    } // getBehaviors()
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
